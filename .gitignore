@@ -1,0 +1,12 @@
+Pipfile
+Pipfile.lock
+companies/migrations/*.py
+companies/__pycache__/*.pyc
+crm/__pycache__/*.pyc
+media/companies/logos/*.png
+media/companies/logos/*.jpg
+media/employees/photos/*.png
+media/employees/photos/*.jpg
+crm/__init__.py
+companies/__init__.py
+
