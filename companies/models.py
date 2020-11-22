@@ -11,7 +11,11 @@ class Profession(models.Model):
 
 	class Meta:
 		ordering = ('name',)
-	
+
+	@property
+	def count_employees(self):
+		return self.employees.count
+
 	def __str__(self):
 		return self.name
 

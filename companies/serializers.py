@@ -34,11 +34,13 @@ class DetailProfessionSerializer(serializers.ModelSerializer):
 	"""
 
 	employees = ProfessionEmployeeSerializer(many=True, read_only=True) # represent all employees related to this profession
+	number_of_employees = serializers.IntegerField(source='count_employees', read_only=True)
 
 	class Meta:
 		model = Profession
 		fields = ('name',
 				  'description',
+				  'number_of_employees',
 				  'employees')
 
 
@@ -134,7 +136,6 @@ class CompanyEmployeeSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Employee
 		fields = ('name', 'profession', 'url')
-
 
 
 class DetailCompanySerializer(serializers.ModelSerializer):
