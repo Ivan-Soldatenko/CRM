@@ -49,11 +49,16 @@ class CompanyFilter(FilterSet):
 
 	from_year_of_foundation = DateTimeFilter(field_name='year_of_foundation', lookup_expr='gte')
 	to_year_of_foundation = DateTimeFilter(field_name='year_of_foundation', lookup_expr='lte')
-	number = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_exact', label='Number of employees')
+	number_of_employees = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_exact', label='Number of employees')
 	min_number_of_employees = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_gte', 
 								label='Number of employees is great than or equal to')
 	max_number_of_employees = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_lte',
 								label='Number of employees is less than or equal to')
+	number_of_partners = NumberFilter(field_name='number_of_partners', method='filter_number_of_partner_exact', label='Number of partners')
+	min_number_of_partners = NumberFilter(field_name='number_of_partners', method='filter_number_of_partner_gte', 
+								label='Number of partners is great than or equal to')
+	max_number_of_partners = NumberFilter(field_name='number_of_partners', method='filter_number_of_partner_lte',
+								label='Number of partners is less than or equal to')
 
 	class Meta:
 		model = Company
@@ -61,9 +66,12 @@ class CompanyFilter(FilterSet):
 			'name',
 			'type_of_company',
 			'country',
-			'number',
+			'number_of_employees',
 			'min_number_of_employees',
 			'max_number_of_employees',
+			'number_of_partners',
+			'min_number_of_partners',
+			'max_number_of_partners',
 			'year_of_foundation',
 			'from_year_of_foundation',
 			'to_year_of_foundation',
@@ -77,6 +85,15 @@ class CompanyFilter(FilterSet):
 
 	def filter_number_of_employee_lte(self, queryset, field_name, value):
 		return queryset.annotate(number_of_employees=Count('employees')).filter(number_of_employees__lte=value)
+
+	def filter_number_of_partner_exact(self, queryset, field_name, value):
+		return queryset.annotate(number_of_partners=Count('partners')).filter(number_of_partners=value)
+
+	def filter_number_of_partner_gte(self, queryset, field_name, value):
+		return queryset.annotate(number_of_partners=Count('partners')).filter(number_of_partners__gte=value)
+
+	def filter_number_of_partner_lte(self, queryset, field_name, value):
+		return queryset.annotate(number_of_partners=Count('partners')).filter(number_of_partners__lte=value)
 
 
 class PartnerShipFilter(FilterSet):
