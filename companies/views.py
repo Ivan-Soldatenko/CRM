@@ -1,8 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins, generics
 from django_filters import FilterSet, AllValuesFilter, DateTimeFilter, NumberFilter
 
-from companies.models import Profession, Employee, Company
-from companies.serializers import (ProfessionSerializer, DetailProfessionSerializer, EmployeeSerializer,
+from companies.models import Profession, Employee, Company, PartnerShip
+from companies.serializers import (ProfessionSerializer, DetailProfessionSerializer, EmployeeSerializer, PartnerShipSerializer,
 								 DetailEmployeeSerializer, CompanySerializer, DetailCompanySerializer)
 
 
@@ -141,3 +141,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
 			return 	CompanySerializer
 
 		return DetailCompanySerializer
+
+
+class PartnerShipListRetrieveUpdateView(mixins.ListModelMixin,
+									   mixins.RetrieveModelMixin,
+									   mixins.UpdateModelMixin,
+									   viewsets.GenericViewSet):
+	queryset = PartnerShip.objects.all()
+	serializer_class = PartnerShipSerializer

@@ -11,5 +11,7 @@ router.register('professions', views.ProfessionViewSet, basename='profession')
 router.register('employees', views.EmployeeViewSet, basename='employee')
 # urls for company ViewSet
 router.register('companies', views.CompanyViewSet, basename='company')
+# urls for partnership View 
+router.register('partnerships', views.PartnerShipListRetrieveUpdateView, basename='partnership')
 
 urlpatterns = router.urls 
