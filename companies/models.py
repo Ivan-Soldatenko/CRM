@@ -46,7 +46,7 @@ class Company(models.Model):
 	@property
 	def count_partners(self):
 		return self.partners.count
-
+	
 	def __str__(self):
 		return self.name 
 

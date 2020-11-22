@@ -158,8 +158,8 @@ class DetailCompanySerializer(serializers.ModelSerializer):
 	# represent companies that are partners to this company
 	year_of_foundation = serializers.DateTimeField(format=DATETIME_FORMAT) # date of foundation with new format
 	partnerships = PartnerShipSerializer(many=True, read_only=True)
-	number_of_employees = serializers.IntegerField(source='count_employees') # number of employees that are belong to this company
-	number_of_partners = serializers.IntegerField(source='count_partners') # number of company that have partnership with this company
+	number_of_employees = serializers.IntegerField(source='count_employees', read_only=True) # number of employees that are belong to this company
+	number_of_partners = serializers.IntegerField(source='count_partners', read_only=True) # number of company that have partnership with this company
 
 	class Meta:
 		model = Company 
