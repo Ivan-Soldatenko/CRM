@@ -11,9 +11,9 @@ class Profession(models.Model):
 
 	class Meta:
 		ordering = ('name',)
-
+	
 	def __str__(self):
-		return self.name 
+		return self.name
 
 
 class Company(models.Model):
@@ -30,13 +30,34 @@ class Company(models.Model):
 	country = models.CharField(max_length=100, blank=False)
 	phone_number = models.CharField(max_length=13)
 	email = models.EmailField(max_length=100)
-	partners = models.ManyToManyField('self') # 'self' = Company in this case, because partners are others companies
+	partners = models.ManyToManyField('self', blank=True, through='PartnerShip') # 'self' = Company in this case, because partners are others companies
 
 	class Meta:
 		ordering = ('name', )
 
 	def __str__(self):
 		return self.name 
+
+	def company_name(self):
+		return self.name
+
+
+class PartnerShip(models.Model):
+	"""
+	Model for representing relationship between partners
+	"""
+
+	company = models.ForeignKey(Company, on_delete=models.CASCADE)
+	company_inviter = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='partnerships')
+	joint_products = models.CharField(max_length=250, blank=True, default='')
+	year_partnership = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ('-year_partnership', )
+		unique_together = ('company', 'company_inviter')
+
+	def __str__(self):
+		return f"Partnership between {company_inviter.name} and {company.name}"
 
 
 class Employee(models.Model):

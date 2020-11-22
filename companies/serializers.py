@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from companies.models import Profession, Company, Employee
+from companies.models import Profession, Company, Employee, PartnerShip
 from crm.settings import DATETIME_FORMAT
 
 
