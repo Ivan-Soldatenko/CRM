@@ -39,6 +39,14 @@ class Company(models.Model):
 	class Meta:
 		ordering = ('name', )
 
+	@property
+	def count_employees(self):
+		return self.employees.count
+
+	@property
+	def count_partners(self):
+		return self.partners.count
+
 	def __str__(self):
 		return self.name 
 

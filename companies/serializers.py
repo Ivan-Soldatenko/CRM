@@ -120,10 +120,19 @@ class CompanySerializer(serializers.ModelSerializer):
 
 	url = serializers.HyperlinkedIdentityField(view_name='companies:company-detail') # url to detail page for company
 	year_of_foundation = serializers.DateTimeField(format=DATETIME_FORMAT) # date of foundation with new format
+	number_of_employees = serializers.IntegerField(source='count_employees') # number of employees that are belong to this company
+	number_of_partners = serializers.IntegerField(source='count_partners') # number of company that have partnership with this company
 
 	class Meta:
 		model = Company 
-		fields = ('name', 'tagline', 'type_of_company', 'year_of_foundation', 'country', 'url')
+		fields = ('name', 
+				'tagline', 
+				'type_of_company', 
+				'year_of_foundation', 
+				'country', 
+				'number_of_employees',
+				'number_of_partners',
+				'url')
 
 
 class CompanyEmployeeSerializer(serializers.ModelSerializer):
@@ -149,6 +158,8 @@ class DetailCompanySerializer(serializers.ModelSerializer):
 	# represent companies that are partners to this company
 	year_of_foundation = serializers.DateTimeField(format=DATETIME_FORMAT) # date of foundation with new format
 	partnerships = PartnerShipSerializer(many=True, read_only=True)
+	number_of_employees = serializers.IntegerField(source='count_employees') # number of employees that are belong to this company
+	number_of_partners = serializers.IntegerField(source='count_partners') # number of company that have partnership with this company
 
 	class Meta:
 		model = Company 
@@ -162,6 +173,8 @@ class DetailCompanySerializer(serializers.ModelSerializer):
 				  'phone_number',
 				  'email',
 				  'partners',
+				  'number_of_employees',
+				  'number_of_partners',
 				  'partnerships',
 				  'employees',
 				  )
