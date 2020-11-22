@@ -94,6 +94,14 @@ class CompanySerializer(serializers.ModelSerializer):
 		fields = ('name', 'tagline', 'type_of_company', 'year_of_foundation', 'country', 'url')
 
 
+class PartnerShipSerializer(serializers.ModelSerializer):
+	company = serializers.SlugRelatedField(read_only=True, slug_field='name')
+
+	class Meta:
+		model = PartnerShip
+		fields = ('company',)
+
+
 class CompanyEmployeeSerializer(serializers.ModelSerializer):
 	"""
 	Serializer for represent employee model in company model
@@ -117,6 +125,7 @@ class DetailCompanySerializer(serializers.ModelSerializer):
 	partners = serializers.HyperlinkedRelatedField(queryset=Company.objects.all(), many=True, view_name='companies:company-detail') 
 	# represent companies that are partners to this company
 	year_of_foundation = serializers.DateTimeField(format=DATETIME_FORMAT) # date of foundation with new format
+	partnerships = PartnerShipSerializer(many=True, read_only=True)
 
 	class Meta:
 		model = Company 
@@ -130,5 +139,6 @@ class DetailCompanySerializer(serializers.ModelSerializer):
 				  'phone_number',
 				  'email',
 				  'partners',
+				  'partnerships',
 				  'employees',
 				  )
