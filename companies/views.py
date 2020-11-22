@@ -63,7 +63,28 @@ class CompanyFilter(FilterSet):
 			'year_of_foundation',
 			'from_year_of_foundation',
 			'to_year_of_foundation',
-	 	)
+		)
+
+
+class PartnerShipFilter(FilterSet):
+	"""
+	Filter class for partnership model
+	"""
+
+	from_year_partnership = DateTimeFilter(field_name='year_partnership', lookup_expr='gte')
+	to_year_partnership = DateTimeFilter(field_name='year_partnership', lookup_expr='lte')
+	company_inviter_name = AllValuesFilter(field_name='company_inviter__name')
+
+	class Meta:
+		model = PartnerShip
+		fields = (
+			# company_inviter__name will be accessed as company_inviter_name
+			'company_inviter_name',
+			'year_partnership',
+			'from_year_partnership',
+			'to_year_partnership',
+		)
+
 
 
 class ProfessionViewSet(viewsets.ModelViewSet):
@@ -149,6 +170,15 @@ class PartnerShipView(mixins.ListModelMixin,
 					  viewsets.GenericViewSet):
 
 	queryset = PartnerShip.objects.all()
+
+	filter_class = PartnerShipFilter
+	search_fields = (
+			'^company_inviter__name',
+			'^joint_products'
+		)
+	ordering_fields = (
+			'year_partnership',
+		)
 
 	def get_serializer_class(self):
 		if hasattr(self, 'action') and self.action == 'list':
