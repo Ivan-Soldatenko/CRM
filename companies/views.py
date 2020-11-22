@@ -3,7 +3,7 @@ from django_filters import FilterSet, AllValuesFilter, DateTimeFilter, NumberFil
 
 from companies.models import Profession, Employee, Company, PartnerShip
 from companies.serializers import (ProfessionSerializer, DetailProfessionSerializer, EmployeeSerializer, PartnerShipSerializer,
-								 DetailEmployeeSerializer, CompanySerializer, DetailCompanySerializer)
+								 DetailPartnerShipSerializer, DetailEmployeeSerializer, CompanySerializer, DetailCompanySerializer)
 
 
 class EmployeeFilter(FilterSet):
@@ -144,8 +144,14 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class PartnerShipView(mixins.ListModelMixin,
-									   mixins.RetrieveModelMixin,
-									   mixins.UpdateModelMixin,
-									   viewsets.GenericViewSet):
+					  mixins.RetrieveModelMixin,
+					  mixins.UpdateModelMixin,
+					  viewsets.GenericViewSet):
+
 	queryset = PartnerShip.objects.all()
-	serializer_class = PartnerShipSerializer
+
+	def get_serializer_class(self):
+		if hasattr(self, 'action') and self.action == 'list':
+			return 	PartnerShipSerializer
+
+		return DetailPartnerShipSerializer

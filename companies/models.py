@@ -38,9 +38,6 @@ class Company(models.Model):
 	def __str__(self):
 		return self.name 
 
-	def company_name(self):
-		return self.name
-
 
 class PartnerShip(models.Model):
 	"""
@@ -57,7 +54,7 @@ class PartnerShip(models.Model):
 		unique_together = ('company', 'company_inviter')
 
 	def __str__(self):
-		return f"Partnership between {company_inviter.name} and {company.name}"
+		return f"Partnership between {self.company_inviter.name} and {self.company.name}"
 
 
 class Employee(models.Model):

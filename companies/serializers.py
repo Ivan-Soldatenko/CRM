@@ -81,6 +81,35 @@ class DetailEmployeeSerializer(serializers.ModelSerializer):
 				 'email')
 
 
+class PartnerShipSerializer(serializers.ModelSerializer):
+	"""
+	Serializer for represent list of partnerships
+	"""
+
+	info = serializers.CharField(source='__str__', read_only=True) # short information about companies that have a partnership
+	url = serializers.HyperlinkedIdentityField(view_name='companies:partnership-detail') # url to detail page for partnership
+
+	class Meta:
+		model = PartnerShip
+		fields = ('info', 'url',)
+
+
+class DetailPartnerShipSerializer(serializers.ModelSerializer):
+	"""
+	Serializer for represent detail information of partnerships
+	"""
+
+	info = serializers.CharField(source='__str__', read_only=True) # short information about companies that have a partnership
+	company = serializers.HyperlinkedRelatedField(view_name='companies:company-detail', read_only=True)
+	# name of company, which is partner to company_inviter
+	company_inviter = serializers.HyperlinkedRelatedField(view_name='companies:company-detail', read_only=True)
+	# name of company, which starts partnerships with company
+
+	class Meta:
+		model = PartnerShip
+		fields = ('info', 'company', 'company_inviter', 'joint_products', 'year_partnership')
+
+
 class CompanySerializer(serializers.ModelSerializer):
 	"""
 	Serializer for represent list of companies
@@ -92,15 +121,6 @@ class CompanySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Company 
 		fields = ('name', 'tagline', 'type_of_company', 'year_of_foundation', 'country', 'url')
-
-
-class PartnerShipSerializer(serializers.ModelSerializer):
-	company_inviter = serializers.SlugRelatedField(read_only=True, slug_field='name')
-	company = serializers.SlugRelatedField(read_only=True, slug_field='name')
-
-	class Meta:
-		model = PartnerShip
-		fields = ('company_inviter', 'company',)
 
 
 class CompanyEmployeeSerializer(serializers.ModelSerializer):
