@@ -34,7 +34,8 @@ class DetailProfessionSerializer(serializers.ModelSerializer):
 	"""
 
 	employees = ProfessionEmployeeSerializer(many=True, read_only=True) # represent all employees related to this profession
-	number_of_employees = serializers.IntegerField(source='count_employees', read_only=True)
+	number_of_employees = serializers.IntegerField(source='count_employees', read_only=True) 
+	# number of employees that are belong to this profession
 
 	class Meta:
 		model = Profession
@@ -144,7 +145,7 @@ class DetailCompanySerializer(serializers.ModelSerializer):
 	"""
 
 	employees = CompanyEmployeeSerializer(many=True, read_only=True) # represent all employees related to this company
-	partners = serializers.HyperlinkedRelatedField(queryset=Company.objects.all(), many=True, view_name='companies:company-detail') 
+	partners = serializers.HyperlinkedRelatedField(queryset=Company.objects.all(), many=True, view_name='companies:company-detail', write_only=True) 
 	# represent companies that are partners to this company
 	year_of_foundation = serializers.DateTimeField(format=DATETIME_FORMAT) # date of foundation with new format
 	partnerships = PartnerShipSerializer(many=True, read_only=True)
