@@ -2,6 +2,36 @@ from django_filters import FilterSet, AllValuesFilter, DateTimeFilter, NumberFil
 from companies.models import Profession, Employee, Company, PartnerShip
 from django.db.models import Count
 
+
+class ProfessionFilter(FilterSet):
+	"""
+	Filter class for profession model
+	"""
+	number_of_employees = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_exact', label='Number of employees')
+	min_number_of_employees = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_gte', 
+								label='Number of employees is great than or equal to')
+	max_number_of_employees = NumberFilter(field_name='number_of_employees', method='filter_number_of_employee_lte',
+								label='Number of employees is less than or equal to')
+
+	class Meta:
+		model = Profession
+		fields = (
+				'name',
+				'number_of_employees',
+				'min_number_of_employees',
+				'max_number_of_employees',
+			)
+
+	def filter_number_of_employee_exact(self, queryset, field_name, value):
+		return queryset.annotate(number_of_employees=Count('employees')).filter(number_of_employees=value)
+
+	def filter_number_of_employee_gte(self, queryset, field_name, value):
+		return queryset.annotate(number_of_employees=Count('employees')).filter(number_of_employees__gte=value)
+
+	def filter_number_of_employee_lte(self, queryset, field_name, value):
+		return queryset.annotate(number_of_employees=Count('employees')).filter(number_of_employees__lte=value)
+
+
 class EmployeeFilter(FilterSet):
 	"""
 	Filter class for employee model

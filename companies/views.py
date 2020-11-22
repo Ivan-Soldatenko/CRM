@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins, generics
-from companies.customfilters import EmployeeFilter, CompanyFilter, PartnerShipFilter
+from companies.customfilters import ProfessionFilter, EmployeeFilter, CompanyFilter, PartnerShipFilter
 from companies.models import Profession, Employee, Company, PartnerShip
 from companies.serializers import (ProfessionSerializer, DetailProfessionSerializer, EmployeeSerializer, PartnerShipSerializer,
 								 DetailPartnerShipSerializer, DetailEmployeeSerializer, CompanySerializer, DetailCompanySerializer)
@@ -12,9 +12,7 @@ class ProfessionViewSet(viewsets.ModelViewSet):
 
 	queryset = Profession.objects.all()
 
-	filter_fields = (
-			'name',
-		)
+	filter_class = ProfessionFilter
 	search_fields = (
 			'^name',
 		)
