@@ -95,11 +95,12 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class PartnerShipSerializer(serializers.ModelSerializer):
+	company_inviter = serializers.SlugRelatedField(read_only=True, slug_field='name')
 	company = serializers.SlugRelatedField(read_only=True, slug_field='name')
 
 	class Meta:
 		model = PartnerShip
-		fields = ('company',)
+		fields = ('company_inviter', 'company',)
 
 
 class CompanyEmployeeSerializer(serializers.ModelSerializer):

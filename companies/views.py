@@ -143,7 +143,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 		return DetailCompanySerializer
 
 
-class PartnerShipListRetrieveUpdateView(mixins.ListModelMixin,
+class PartnerShipView(mixins.ListModelMixin,
 									   mixins.RetrieveModelMixin,
 									   mixins.UpdateModelMixin,
 									   viewsets.GenericViewSet):
